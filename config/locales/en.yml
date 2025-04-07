@@ -1,0 +1,6 @@
+---
+en:
+  decidim:
+    components:
+      CohesionID:
+        name: CohesionID
