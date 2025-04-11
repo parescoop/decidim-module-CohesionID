@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-module Decidim::CohesionID::Admin
+module Decidim::CohesionId::Admin
   describe Permissions do
     subject { described_class.new(user, permission_action, context).permissions.allowed? }
 
@@ -13,7 +13,7 @@ module Decidim::CohesionID::Admin
       }
     end
     let(:action) do
-      { scope: :admin, action: :read, subject: :CohesionID }
+      { scope: :admin, action: :read, subject: :CohesionId }
     end
     let(:permission_action) { Decidim::PermissionAction.new(**action) }
 
@@ -24,7 +24,7 @@ module Decidim::CohesionID::Admin
 
       context "when scope is not admin" do
         let(:action) do
-          { scope: :foo, action: :read, subject: :CohesionID }
+          { scope: :foo, action: :read, subject: :CohesionId }
         end
 
         it_behaves_like "permission is not set"

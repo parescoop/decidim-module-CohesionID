@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-require "decidim/CohesionID/test/factories"
+require "decidim/cohesion_id/test/factories"

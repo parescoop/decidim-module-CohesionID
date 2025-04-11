@@ -1,0 +1,33 @@
+module Decidim
+  module CohesionId
+    class CohesionIdMailer < Decidim::ApplicationMailer
+      include Decidim::TranslationsHelper
+      include Decidim::SanitizeHelper
+
+      helper Decidim::TranslationsHelper
+
+      def send_notification(user)
+        with_user(user) do
+          @user = user
+          @organization = @user.organization
+
+          subject = I18n.t(
+            "subject",
+            scope: "decidim.cohesionID.cohesion_id_mailer"
+          )
+          mail(to: user.email, subject: subject)
+        end
+      end
+
+      def send_update_email_notification(user)
+        with_user(user) do
+          @user = user
+          @organization = @user.organization
+
+          subject = I18n.t("subject", scope: "decidim.cohesion_id.cohesion_id_mailer.send_update_email_notification")
+          mail(to: user.email, subject: subject)
+        end
+      end
+    end
+  end
+end

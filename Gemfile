@@ -5,7 +5,7 @@ source "https://rubygems.org"
 ruby RUBY_VERSION
 
 gem "decidim", "~> 0.28.5"
-gem "decidim-CohesionID", path: "."
+gem "decidim-CohesionId", path: "."
 
 gem "puma", ">= 6.3.1"
 gem "bootsnap", "~> 1.4"

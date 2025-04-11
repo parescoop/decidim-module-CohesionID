@@ -1,7 +1,7 @@
 {
-  "name": "decidim-CohesionID",
+  "name": "decidim-CohesionId",
   "version": "0.0.1",
-  "description": "CohesionID Integration for Decidim.",
+  "description": "CohesionId Integration for Decidim.",
   "private": true,
   "license": "AGPL-3.0-or-later",
   "scripts": {
