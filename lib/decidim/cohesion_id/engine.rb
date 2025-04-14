@@ -10,9 +10,14 @@ module Decidim
       isolate_namespace Decidim::CohesionId
 
       routes do
-        # Add engine routes here
-        # resources :CohesionId
-        # root to: "CohesionId#index"
+        devise_scope :user do
+          match(
+            "/users/sign_out",
+            to: "sessions#destroy",
+            as: "destroy_user_session",
+            via: [:delete, :post]
+          )
+        end
       end
 
       initializer "decidim_cohesion_id.mount_routes", before: :add_routing_paths do

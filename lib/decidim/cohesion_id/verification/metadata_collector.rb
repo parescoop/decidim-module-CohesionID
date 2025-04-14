@@ -28,7 +28,9 @@ module Decidim
                       when Hash
                         attributes.public_send(defs[:type], defs[:name])
                       when String
-                        attributes.dig(defs.to_sym).try(:first)
+                        attributes.dig(defs.to_sym)
+                      when Array
+                        attributes.values_at(*defs.map(&:to_sym)).try(:compact).try(:first)
                       end
                     end
 

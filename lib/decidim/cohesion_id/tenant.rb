@@ -100,7 +100,7 @@ module Decidim
 
       # Le chiavi che verranno salvate nell'autorizzazione (record Decidim::Authorization)
       config_accessor :metadata_attributes do
-        []
+        {}
       end
 
       def initialize
@@ -160,13 +160,6 @@ module Decidim
               ipa: config.ipa,
               sso: config.sso
             },
-            # sso_check_url: config.sso_check_url,
-            # sso_check_url: config.sso_check_url,
-            # sso_check_url: config.sso_check_url,
-            # sso_check_url: config.sso_check_url,
-            # sso_check_url: config.sso_check_url,
-            # sso_check_url: config.sso_check_url,
-            # sso_check_url: config.sso_check_url,
           }
         }
       end
@@ -224,20 +217,13 @@ module Decidim
               as: "user_#{config.name}_omniauth_create",
               via: [:post, :put, :patch]
             )
-            #
-            # match(
-            #   "/users/auth/#{config.name}/slo",
-            #   to: "sessions#slo",
-            #   as: "user_#{config.name}_omniauth_slo",
-            #   via: [:get, :post]
-            # )
-            #
-            # match(
-            #   "/users/auth/#{config.name}/spslo",
-            #   to: "sessions#spslo",
-            #   as: "user_#{config.name}_omniauth_spslo",
-            #   via: [:get, :post]
-            # )
+
+            match(
+              "/users/auth/#{config.name}/slo",
+              to: "sessions#slo",
+              as: "user_#{config.name}_omniauth_slo",
+              via: [:get, :post]
+            )
           end
         end
       end

@@ -5,6 +5,7 @@
 
 require "decidim/cohesion_id/request"
 require "decidim/cohesion_id/response"
+require "decidim/cohesion_id/client"
 require "decidim/cohesion_id/validation_error"
 
 module OmniAuth
@@ -68,15 +69,38 @@ module OmniAuth
       end
 
       def parse_data(data)
-        # TODO: fix read with nokogiri
-
         @name_id = data.dig(:codice_fiscale)
-        @id_sessione_sso = data.dig(:id_sessione_sso)
-        @id_sessione_aspnet_sso = data.dig(:id_sessione_aspnet_sso)
+        @id_sessione_sso = data.dig(:id_sessione_sso) # forse rimuoverlo dagli attributi e inserirlo in sessione se serve al logout
+        @id_sessione_aspnet_sso = data.dig(:id_sessione_aspnet_sso)  # forse rimuoverlo dagli attributi e inserirlo in sessione se serve al logout
         @attributes = data
         # @response_object = response
       rescue Exception => ex
         raise Decidim::CohesionId::ValidationError.new(ex)
+      end
+
+      def other_phase
+        if on_path?(slo_path)
+          @env['omniauth.strategy'] ||= self
+          setup_phase
+
+          other_phase_for_slo
+        else
+          call_app!
+        end
+      end
+
+      def other_phase_for_slo
+        #TODO: check request and options
+        Client.call(settings, "LogoutSito", @id_sessione_sso, @id_sessione_aspnet_sso)
+      ensure
+        redirect('/') #TODO: URL AFTER LOGOUT
+      end
+
+      def slo_path
+        @slo_path ||= begin
+                     path ||= "#{script_name}#{path_prefix}/#{name}/slo"
+                     path
+                   end
       end
 
       # option :client_options, {

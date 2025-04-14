@@ -34,7 +34,7 @@ module Decidim
             flash[:notice] = t("authorizations.create.success", scope: "decidim.cohesion_id.verification")
           end
 
-          Decidim::Cohesion_Id::CohesionIdJob.perform_later(current_user)
+          Decidim::CohesionId::CohesionIdJob.perform_later(current_user)
           return redirect_to(stored_location_for(resource || :user) || decidim.root_path)
         end
 
@@ -82,7 +82,7 @@ module Decidim
         # in quanto a fine processo all'utente viene aggiornata l'email e il tutto protrebbe essere invalido
         if invited_user.present? && form_params.dig(:raw_data, :info, :email).present? && invited_user.email != form_params.dig(:raw_data, :info, :email) &&
           current_organization.users.where(email: form_params.dig(:raw_data, :info, :email)).where.not(id: invited_user.id).present?
-          set_flash_message :alert, :failure, kind: "Cohesion_Id", reason: t("decidim.devise.omniauth_registrations.create.email_already_exists")
+          set_flash_message :alert, :failure, kind: "CohesionID", reason: t("decidim.devise.omniauth_registrations.create.email_already_exists")
           return redirect_to after_omniauth_failure_path_for(resource_name)
         end
 
@@ -96,7 +96,7 @@ module Decidim
           on(:ok) do |user|
             # Se l'identità COHESION_ID è già utilizzata da un altro account
             if invited_user.present? && invited_user.email != user.email
-              set_flash_message :alert, :failure, kind: "Cohesion_Id", reason: t("decidim.devise.omniauth_registrations.create.email_already_exists")
+              set_flash_message :alert, :failure, kind: "CohesionID", reason: t("decidim.devise.omniauth_registrations.create.email_already_exists")
               return redirect_to after_omniauth_failure_path_for(resource_name)
             end
 
@@ -121,7 +121,7 @@ module Decidim
                 Decidim::ActionLogger.log(:registration, user, i, {})
               end
               sign_in_and_redirect user, verified_email: verified_e, event: :authentication
-              set_flash_message :notice, :success, kind: "Cohesion_Id"
+              set_flash_message :notice, :success, kind: "CohesionID"
             else
               expire_data_after_sign_in!
               user.resend_confirmation_instructions unless user.confirmed?
@@ -131,12 +131,12 @@ module Decidim
           end
 
           on(:invalid) do
-            set_flash_message :notice, :success, kind: "Cohesion_Id"
+            set_flash_message :notice, :success, kind: "CohesionID"
             render :new
           end
 
           on(:error) do |user|
-            set_flash_message :alert, :failure, kind: "Cohesion_Id", reason: user.errors.full_messages.try(:first)
+            set_flash_message :alert, :failure, kind: "CohesionID", reason: user.errors.full_messages.try(:first)
 
             render :new
           end
@@ -144,7 +144,7 @@ module Decidim
       end
 
       def failure
-        set_flash_message! :alert, :failure, kind: "CohesionId", reason: failure_message
+        set_flash_message! :alert, :failure, kind: "CohesionID", reason: failure_message
         redirect_to after_omniauth_failure_path_for(resource_name)
       end
 
@@ -173,7 +173,7 @@ module Decidim
 
       def authorize_user(user)
         authenticator.authorize_user!(user)
-      rescue Decidim::Cohesion_Id::Authentication::AuthorizationBoundToOtherUserError
+      rescue Decidim::CohesionId::Authentication::AuthorizationBoundToOtherUserError
         nil
       end
 
@@ -200,11 +200,11 @@ module Decidim
       def tenant
         @tenant ||= begin
                       matches = request.path.match(%r{^/users/auth/([^/]+)/.+})
-                      raise "Invalid Cohesion_Id tenant" unless matches
+                      raise "Invalid CohesionID tenant" unless matches
 
                       name = matches[1]
                       tenant = Decidim::CohesionId.tenants.find { |t| t.name == name }
-                      raise "Unkown Cohesion_Id tenant: #{name}" unless tenant
+                      raise "Unkown CohesionID tenant: #{name}" unless tenant
 
                       tenant
                     end

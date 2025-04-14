@@ -6,19 +6,19 @@ it:
         decidim/user:
           attributes:
             email:
-              cant_recover_password_due_cohesion_id: Devi effettuare l'accesso tramite Cohesion_Id (SPID, CIE, CNS)
+              cant_recover_password_due_cohesion_id: Devi effettuare l'accesso tramite CohesionID (SPID, CIE, CNS)
   decidim:
     admin:
       filters:
         cohesion_id_presence:
-          label: Cohesion_Id
+          label: CohesionID
           values:
             'false': Non abilitato
             'true': Abilitato
         cohesion_id_operation:
-          label: Cohesion_Id
+          label: CohesionID
           values:
-            'true': Solo Cohesion_Id
+            'true': Solo CohesionID
         action_type:
           label: Tipo di azione
           values:
@@ -36,9 +36,9 @@ it:
         registration: "%{user_name} si è registrato con il provider %{resource_name} %{space_name} "
     components:
       decidim_cohesion_id:
-        name: Cohesion_Id
+        name: CohesionID
       cohesion_id:
-        name: Cohesion_Id
+        name: CohesionID
     cohesion_id:
       admin:
         actions:
@@ -47,12 +47,12 @@ it:
         invitations:
           edit:
             header: Completa la registrazione
-            subtitle: Effettua il login tramite Cohesion_Id (SPID, CIE, CNS)
+            subtitle: Effettua il login tramite CohesionID (SPID, CIE, CNS)
       omniauth_callbacks:
         failure:
           success_status: "Si è verificato un errore durante il login."
           already_authorized: "Utente già loggato"
-          identity_bound_to_other_user: "L'account Cohesion_Id è già utilizzato da un altro utente."
+          identity_bound_to_other_user: "L'account CohesionID è già utilizzato da un altro utente."
           session_expiration: "Sessione scaduta"
           conditions: ""
         create:
@@ -81,27 +81,27 @@ it:
         failure_25: Processo di autenticazione annullato dall'utente.
       cohesion_id:
         info_message: Se è la prima volta che accedi a questa piattaforma, ignora questo messaggio. Invece per collegare la vecchia utenza effettuare prima il login e in seguito effettuare il login dal profilo.
-        disclaimer: "Cohesion_Id è il sistema di accesso che consente di utilizzare, con un'identità digitale unica, i servizi online della Pubblica Amministrazione e dei privati accreditati. Se sei già in possesso di un'identità digitale, accedi con le credenziali del tuo gestore. Se non hai ancora un'identità digitale, richiedila ad uno dei gestori."
-        link: Maggiori informazioni su Cohesion_Id
-        request: Non hai Cohesion_Id?
+        disclaimer: "CohesionID è il sistema di accesso che consente di utilizzare, con un'identità digitale unica, i servizi online della Pubblica Amministrazione e dei privati accreditati. Se sei già in possesso di un'identità digitale, accedi con le credenziali del tuo gestore. Se non hai ancora un'identità digitale, richiedila ad uno dei gestori."
+        link: Maggiori informazioni su CohesionID
+        request: Non hai CohesionID?
         help: Serve aiuto?
       cohesion_id_mailer:
         subject: associazione account avvenuta con successo
         send_notification:
           dear_user: "Gentile utente,"
-          content: "il tuo vecchio account è stato associato correttamente al tuo account Cohesion_Id. Le tue vecchie credenziali sono state disattivate. D'ora in avanti per accedere alla piattaforma dovrai utilizzare Cohesion_Id (SPID, CIE o CNS)."
+          content: "il tuo vecchio account è stato associato correttamente al tuo account CohesionID. Le tue vecchie credenziali sono state disattivate. D'ora in avanti per accedere alla piattaforma dovrai utilizzare CohesionID (SPID, CIE o CNS)."
         send_update_email_notification:
           subject: Aggiornamento email account avvenuta con successo
           dear_user: "Gentile utente,"
-          content: "la tua email è stata correttamente aggiornata con l'email del tuo account Cohesion_Id"
+          content: "la tua email è stata correttamente aggiornata con l'email del tuo account CohesionID"
       verification:
         authorizations:
           create:
-            success: Sei stato autorizzato con successo tramite Cohesion_Id
+            success: Sei stato autorizzato con successo tramite CohesionID
     system:
       organizations:
         omniauth_settings:
-          validation_alert: "Il \"name\" deve essere differente anche tra le configurazioni di Cohesion_Id."
+          validation_alert: "Il \"name\" deve essere differente anche tra le configurazioni di CohesionID."
           cohesion_id:
             tenant_name: "Inserire il \"name\" utilizzato per idetificare le configurazioni tenant."
             metadata: "Inserire il link del provider"
@@ -117,4 +117,4 @@ it:
         sign_in_with_provider_cohesion_id: Entra con SPID, CIE o CNS
     failure:
       user:
-        invalid_due_cohesion_id: Devi effettuare l'accesso tramite Cohesion_Id (SPID, CIE, CNS)
+        invalid_due_cohesion_id: Devi effettuare l'accesso tramite CohesionID (SPID, CIE, CNS)

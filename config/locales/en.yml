@@ -6,19 +6,19 @@ en:
         decidim/user:
           attributes:
             email:
-              cant_recover_password_due_cohesion_id: You must login via Cohesion_Id (SPID, CIE, CNS)
+              cant_recover_password_due_cohesion_id: You must login via CohesionID (SPID, CIE, CNS)
   decidim:
     admin:
       filters:
         cohesion_id_presence:
-          label: Cohesion_Id
+          label: CohesionID
           values:
             'false': Not enabled
             'true': Enabled
         cohesion_id_operation:
-          label: Cohesion_Id
+          label: CohesionID
           values:
-            'true': Only Cohesion_Id
+            'true': Only CohesionID
         action_type:
           label: Action type
           values:
@@ -36,9 +36,9 @@ en:
         registration: "%{user_name} registered with provider %{resource_name} %{space_name} "
     components:
       decidim_cohesion_id:
-        name: Cohesion_Id
+        name: CohesionID
       cohesion_id:
-        name: Cohesion_Id
+        name: CohesionID
     cohesion_id:
       admin:
         actions:
@@ -47,12 +47,12 @@ en:
         invitations:
           edit:
             header: Complete registration
-            subtitle: Login via Cohesion_Id (SPID, CIE, CNS)
+            subtitle: Login via CohesionID (SPID, CIE, CNS)
       omniauth_callbacks:
         failure:
           success_status: "An error occurred while logging in."
           already_authorized: "User already logged in"
-          identity_bound_to_other_user: "Cohesion_Id account is already used by another user."
+          identity_bound_to_other_user: "CohesionID account is already used by another user."
           session_expiration: "Session expired"
           conditions: ""
         create:
@@ -81,27 +81,27 @@ en:
         failure_25: Authentication process canceled by user.
       cohesion_id:
         info_message: If this is your first time accessing this platform, please ignore this message. Instead, to connect the old user log in first and then log in from the profile.
-        disclaimer: "Cohesion_Id is the access system that allows you to use the online services of the Public Administration and accredited private individuals with a unique digital identity. If you already have a digital identity, log in with your manager's credentials. If you don't have a digital identity yet, request it from one of the managers."
-        link: More information on Cohesion_Id
-        request: Don't have Cohesion_Id?
+        disclaimer: "CohesionID is the access system that allows you to use the online services of the Public Administration and accredited private individuals with a unique digital identity. If you already have a digital identity, log in with your manager's credentials. If you don't have a digital identity yet, request it from one of the managers."
+        link: More information on CohesionID
+        request: Don't have CohesionID?
         help: Need help?
       cohesion_id_mailer:
         subject: account association successful
         send_notification:
           dear_user: "Dear user,"
-          content: "your old account has been successfully associated with your Cohesion_Id account. Your old credentials have been deactivated. From now on, to access the platform you will have to use Cohesion_Id (SPID, CIE or CNS)."
+          content: "your old account has been successfully associated with your CohesionID account. Your old credentials have been deactivated. From now on, to access the platform you will have to use CohesionID (SPID, CIE or CNS)."
         send_update_email_notification:
           subject: Account email updated
           dear_user: "Dear user,"
-          content: "your email has been successfully updated with email incoming from Cohesion_Id account."
+          content: "your email has been successfully updated with email incoming from CohesionID account."
       verification:
         authorizations:
           create:
-            success: You have been successfully authorized through Cohesion_Id
+            success: You have been successfully authorized through CohesionID
     system:
       organizations:
         omniauth_settings:
-          validation_alert: "The \"name\" must also be different between the Cohesion_Id configuration."
+          validation_alert: "The \"name\" must also be different between the CohesionID configuration."
           cohesion_id:
             tenant_name: "Enter the \"name\" used to identify tenant configurations."
             metadata: "Enter the link of the identity provider"
@@ -116,4 +116,4 @@ en:
         sign_in_with_provider_cohesion_id: Login with SPID, CIE or CNS
     failure:
       user:
-        invalid_due_cohesion_id: You must login via Cohesion_Id (SPID, CIE, CNS)
+        invalid_due_cohesion_id: You must login via CohesionID (SPID, CIE, CNS)

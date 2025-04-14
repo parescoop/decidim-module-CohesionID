@@ -56,23 +56,22 @@ Decidim::CohesionId.configure do |config|
   # config.sso = nil
 
   # Le chiavi che verranno salvate sul DB nell'autorizzazione
-  config.metadata_attributes = {
-    name: "nome",
-    surname: "cognome",
-    fiscal_code: "CodiceFiscale",
-    gender: "sesso",
-    birthday: "dataNascita",
-    birthplace: "luogoNascita",
-    company_name: "companyName",
-    registered_office: "registeredOffice",
-    iva_code: "ivaCode",
-    id_card: "idCard",
-    mobile_phone: "cellulare",
-    email: "emailAddressPersonale",
-    address: "indirizzoResidenza",
-    digital_address: "emailAddress",
-    spid_code: "spidCode"
-  }
+  # config.metadata_attributes = {
+  #   name: ['nome', 'name'],
+  #   surname: ['cognome', 'familyName'],
+  #   fiscal_code: ['codice_fiscale', 'login'], # :codice_fiscale => RSSMRA85D18F051Y
+  #   fiscal_number: 'fiscaleNumber', # :fiscalNumber => TINIT-RSSMRA85D18F051Y
+  #   gender: ['sesso', 'gender'],
+  #   birthday: ['data_nascita', 'dateOfBirth'],
+  #   birthplace: ["localita_nascita", "placeOfBirth"],
+  #   county_of_birth: ['provincia_nascita', 'countyOfBirth'],
+  #   address: ['indirizzo_residenza', 'address'],
+  #   email: 'email',
+  #   pec: ['email_certificata', 'digitalAddress'],
+  #   company_fiscal_number: 'companyFiscalNumber',
+  #   spid_code: "spidCode",
+  #   tipo_autenticazione: 'tipo_autenticazione'
+  # }
 
   # Permette di aggiungere altre autorizzazioni. Es: ["census_authorization_handler"]
   # config.authorization_handlers =  []
