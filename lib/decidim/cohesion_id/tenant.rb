@@ -108,7 +108,7 @@ module Decidim
       end
 
       def name=(name)
-        raise(InvalidTenantName, "Il nome del tenant FEDERA può contenere solo lettere o underscore.") unless name.match?(/^[a-z_]+$/)
+        raise(InvalidTenantName, "Il nome del tenant #{name} può contenere solo lettere o underscore.") unless name.match?(/^[a-z_]+$/)
         config.name = name
       end
 

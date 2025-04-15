@@ -141,7 +141,7 @@ module Decidim
           if user.valid?
             if user_changed
               if user.save! && is_spid? && notification_email
-                Decidim::Federa::UpdateEmailCohesionIdJob.perform_later(user)
+                Decidim::CohesionId::UpdateEmailCohesionIdJob.perform_later(user)
               end
             end
           else
