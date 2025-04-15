@@ -6,7 +6,7 @@ Decidim::CohesionId.configure do |config|
   config.name = "<%= tenant_name %>"
 
   # Dominio tenant
-  config.entity_id = "<%= entity_id %>"
+  config.entity_id = Rails.application.secrets.omniauth[:cohesion_id][:entity_id]
 
   ## Provider WAYF endpoint. Default: CohesionId in secrets.yml
   ## Production: 'https://cohesion2.regione.marche.it/SPManager/WAYF.aspx'

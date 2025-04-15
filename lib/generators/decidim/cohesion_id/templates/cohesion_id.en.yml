@@ -2,7 +2,7 @@ en:
   decidim:
     authorization_handlers:
       <%= tenant_name %>_identity:
-        name: "FedERa"
-        explanation: "Connect your account by logging in with FedERa (SPID, CIE, CNS)"
+        name: "CohesionID"
+        explanation: "Connect your account by logging in with CohesionID (SPID, CIE, CNS)"
         title: Migrate account
-        description: Your old account will be associated with your FedERa account. Your old credentials will be deactivated and you will be able to continue logging in with your FedERa account (SPID, CIE, CNS).
+        description: Your old account will be associated with your CohesionID account. Your old credentials will be deactivated and you will be able to continue logging in with your CohesionID account (SPID, CIE, CNS).

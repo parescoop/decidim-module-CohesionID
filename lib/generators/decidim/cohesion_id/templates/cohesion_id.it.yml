@@ -2,7 +2,7 @@ it:
   decidim:
     authorization_handlers:
       <%= tenant_name %>_identity:
-        name: "FedERa"
-        explanation: "Migrazione account verso account FedERa (SPID, CIE, CNS)"
+        name: "CohesionID"
+        explanation: "Migrazione account verso account CohesionID (SPID, CIE, CNS)"
         title: Migrazione account
-        description: Il tuo vecchio account verrà associato al tuo account FedERa. Le tue vecchie credenziali saranno disattivate e potrai continuare ad accedere con il tuo account FedERa (SPID, CIE, CNS).
+        description: Il tuo vecchio account verrà associato al tuo account CohesionID. Le tue vecchie credenziali saranno disattivate e potrai continuare ad accedere con il tuo account CohesionID (SPID, CIE, CNS).

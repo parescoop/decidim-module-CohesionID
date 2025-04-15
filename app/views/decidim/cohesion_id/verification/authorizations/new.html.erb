@@ -1,19 +1,24 @@
 <%
-  tenant_name = current_organization.enabled_omniauth_providers.dig(:cohesionID, :tenant_name)
+  tenant_name = current_organization.enabled_omniauth_providers.dig(:cohesion_id, :tenant_name)
 %>
 
-<div class="row">
-  <p>
-    <strong>
+<main class="layout-1col cols-8">
+  <div class="text-center py-10">
+    <h1 class="title-decorator inline-block text-left mb-12">
       <%= t("decidim.authorization_handlers.#{tenant_name}_identity.title") %>
-    </strong>
-  </p>
-  <p>
-    <%= t("decidim.authorization_handlers.#{tenant_name}_identity.description") %>
-  </p>
-</div>
+    </h1>
+    <p class="text-lg text-gray-2">
+      <%= t("decidim.authorization_handlers.#{tenant_name}_identity.description") %>
+    </p>
+  </div>
 
-<%= button_to decidim_cohesionID.send("user_#{current_organization.enabled_omniauth_providers.dig(:cohesionID, :tenant_name)}_omniauth_authorize_path"),
-              class: "button button--social button--#{normalize_provider_name(:cohesionID)}", form_class: "" do %>
-  <%= t("devise.shared.links.sign_in_with_provider_cohesionID") %>
-<% end %>
+  <div class="space-y-16 login__omniauth">
+    <% size = current_organization.enabled_omniauth_providers.dig(:cohesion_id, :button_size).presence || "xl" %>
+    <% link_classes = "login__omniauth-button button--cohesion_id button--#{size}" %>
+    <%= link_to decidim_cohesion_id.send("user_#{current_organization.enabled_omniauth_providers.dig(:cohesion_id, :tenant_name)}_omniauth_authorize_path"), class: link_classes, method: :post, title: t("devise.shared.links.log_in_with_provider", provider: normalize_provider_name(:cohesion_id).titleize) do %>
+    <span>
+      <%= t("devise.shared.links.sign_in_with_provider_cohesion_id") %>
+    </span>
+    <% end %>
+  </div>
+</main>

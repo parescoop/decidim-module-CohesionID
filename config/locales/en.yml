@@ -10,6 +10,8 @@ en:
   decidim:
     admin:
       filters:
+        identities_provider_eq:
+          label: Provider login
         cohesion_id_presence:
           label: CohesionID
           values:
@@ -34,10 +36,13 @@ en:
         logout: "%{user_name} logged out with provider %{resource_name} %{space_name}"
         login: "%{user_name} logged in with provider %{resource_name} %{space_name}"
         registration: "%{user_name} registered with provider %{resource_name} %{space_name} "
+    authorization_handlers:
+      _identity:
+        name: No one
     components:
       decidim_cohesion_id:
         name: CohesionID
-      cohesion_id:
+      CohesionId:
         name: CohesionID
     cohesion_id:
       admin:
@@ -104,12 +109,10 @@ en:
           validation_alert: "The \"name\" must also be different between the CohesionID configuration."
           cohesion_id:
             tenant_name: "Enter the \"name\" used to identify tenant configurations."
-            metadata: "Enter the link of the identity provider"
-            service_provider: "Enter the domain of the service provider (e.g. https://mydomain.it)"
-            certificate: "The certificate expires on %{date}"
-            new_certificate: "The new certificate expires on %{date}"
-            button_size: "Button size must to be in [ s, m, l, xl]. Default: m"
-            entity_id: "Enter the URL of the entity ID"
+            sso_web_check_session: "Fixed parameter of the authentication token recovery page. Default: https://cohesion2.regione.marche.it/SPManager/webCheckSessionSSO.aspx"
+            sso_check_url: "Fixed parameter of the Cohesion SSO page. Default: https://cohesion2.regione.marche.it/SPManager/WAYF.aspx"
+            id_sito: Identifier assigned to the specific integration with CohesionID.
+            entity_id: "Enter the domain of the service provider (es: https://mydomain.org)"
   devise:
     shared:
       links:

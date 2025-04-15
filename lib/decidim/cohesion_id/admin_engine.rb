@@ -9,14 +9,16 @@ module Decidim
       paths["db/migrate"] = nil
       paths["lib/tasks"] = nil
 
-      routes do
-        # Add admin engine routes here
-        # resources :CohesionId do
-        #   collection do
-        #     resources :exports, only: [:create]
-        #   end
-        # end
-        # root to: "CohesionId#index"
+      initializer "decidim_cohesion_id_admin.mount_routes", before: "decidim_admin.mount_routes" do
+        Decidim::Admin::Engine.routes.append do
+          mount Decidim::CohesionId::AdminEngine => "/"
+        end
+      end
+
+      initializer "decidim_cohesion:ud.view_helpers" do
+        ActiveSupport.on_load(:action_controller_base) do
+          helper Decidim::CohesionId::Admin::ApplicationHelper
+        end
       end
 
       def load_seed

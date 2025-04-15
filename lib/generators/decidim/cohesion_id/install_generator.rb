@@ -8,7 +8,6 @@ module Decidim
 
         desc "Crea un Decidim CohesionID Tenant"
         argument :tenant_name, type: :string
-        argument :entity_id, type: :string
 
         def copy_initializer
           if Decidim::CohesionId.tenants.map(&:name).include?(tenant_name)

@@ -1,1 +1,72 @@
-/* css for decidim_CohesionId */
+.login__omniauth {
+  .login__omniauth-button.button--cohesion_id {
+    background-color: #06c;
+    border-color: #06c;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px;
+    text-align: center;
+    color: white;
+
+    .button--social__text {
+      margin-left: 0;
+      text-align: center;
+    }
+
+    &:not([disabled]):not([class*=button__text]):not(label):hover,
+    &.is-hover,
+    &:hover, &:active, &:focus {
+      color: #fff;
+      background-color: #0053a6;
+      border-color: #004d99;
+    }
+
+    &.button--s {
+      margin: 0 auto;
+      width: 50%;
+      min-width: 0;
+    }
+
+    &.button--m {
+      margin: 0 auto;
+      width: 65%;
+      min-width: 0;
+    }
+
+    &.button--l {
+      margin: 0 auto;
+      width: 80%;
+      min-width: 0;
+    }
+
+    &.button--xl {
+      margin: 0 auto;
+      width: 100%;
+    }
+
+  }
+  &.login__omniauth__horizontal {
+    .login__omniauth-button.button--cohesion_id {
+      &.button--s {
+        width: auto;
+      }
+
+      &.button--m {
+        width: auto;
+      }
+
+      &.button--l {
+        width: auto;
+      }
+
+      &.button--xl {
+        width: auto;
+      }
+    }
+  }
+}
+.cohesion_id-badge {
+  img {
+    max-width: 70px;
+  }
+}

@@ -69,6 +69,7 @@ class SecretsModifier
     @final += "      sso_web_check_session: #{config_branch == :production ? 'https://cohesion2.regione.marche.it/SPManager/webCheckSessionSSO.aspx' : 'https://cohesion2.regione.marche.it/SPManager/webCheckSessionSSO.aspx'}\n"
     @final += "      sso_check_url: #{config_branch == :production ? 'https://cohesion2.regione.marche.it/SPManager/WAYF.aspx' : 'https://cohesion2.regione.marche.it/SPManager/WAYF.aspx'}\n"
     @final += "      id_sito: change_me\n"
+    @final += "      entity_id: https://mydomain.org\n"
     # @final += "      button_size: l # available options: s, m, l, xl\n"
   end
 

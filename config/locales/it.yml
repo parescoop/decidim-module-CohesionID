@@ -10,6 +10,8 @@ it:
   decidim:
     admin:
       filters:
+        identities_provider_eq:
+          label: Provider login
         cohesion_id_presence:
           label: CohesionID
           values:
@@ -34,10 +36,13 @@ it:
         logout: "%{user_name} ha effettuato il logout con il provider %{resource_name} %{space_name}"
         login: "%{user_name}  ha effettuato il login con il provider %{resource_name} %{space_name}"
         registration: "%{user_name} si è registrato con il provider %{resource_name} %{space_name} "
+    authorization_handlers:
+      _identity:
+        name: Nessuno
     components:
       decidim_cohesion_id:
         name: CohesionID
-      cohesion_id:
+      CohesionId:
         name: CohesionID
     cohesion_id:
       admin:
@@ -104,12 +109,10 @@ it:
           validation_alert: "Il \"name\" deve essere differente anche tra le configurazioni di CohesionID."
           cohesion_id:
             tenant_name: "Inserire il \"name\" utilizzato per idetificare le configurazioni tenant."
-            metadata: "Inserire il link del provider"
-            service_provider: "Inserire il dominio del service provider (es: https://miodominio.it)"
-            certificate: "Il certificato scade il %{date}"
-            new_certificate: "Il nuovo certificato scade il %{date}"
-            button_size: "Grandezza bottone deve essere in [ s, m, l, xl]. Default: m"
-            entity_id: "Inserire l'URL dell'entity ID"
+            sso_web_check_session: "Parametro  fisso della pagina di recupero token di autenticazione. Default: https://cohesion2.regione.marche.it/SPManager/webCheckSessionSSO.aspx"
+            sso_check_url: "Parametro fisso della pagina SSO di Cohesion. Default: https://cohesion2.regione.marche.it/SPManager/WAYF.aspx"
+            id_sito: Identificativo assegnato all'integrazione specifica con CohesionID.
+            entity_id: "Inserire il dominio del service provider (es: https://miodominio.it)"
 
   devise:
     shared:
