@@ -32,8 +32,6 @@ module OmniAuth
         @attributes
       end
 
-      # extra { { :raw_info => @attributes, :session_index => @session_index, :response_object =>  @response_object } }
-
       def callback_phase
         raise Decidim::CohesionId::ValidationError.new("XML response missing") unless request.params["auth"]
 
@@ -51,37 +49,11 @@ module OmniAuth
 
       def parse_data(data)
         @name_id = data.dig(:codice_fiscale)
-        @id_sessione_sso = data.dig(:id_sessione_sso) # todo: forse rimuoverlo dagli attributi e inserirlo in sessione se serve al logout
-        @id_sessione_aspnet_sso = data.dig(:id_sessione_aspnet_sso)  # forse rimuoverlo dagli attributi e inserirlo in sessione se serve al logout
+        session["decidim-#{options.name}.id_sessione_sso"] = data.dig(:id_sessione_sso)
+        session["decidim-#{options.name}.id_sessione_aspnet_sso"] = data.dig(:id_sessione_aspnet_sso)
         @attributes = data
-        # @response_object = response
       rescue Exception => ex
         raise Decidim::CohesionId::ValidationError.new(ex)
-      end
-
-      def other_phase
-        if on_path?(slo_path)
-          @env['omniauth.strategy'] ||= self
-          setup_phase
-
-          other_phase_for_slo
-        else
-          call_app!
-        end
-      end
-
-      def other_phase_for_slo
-        #TODO: check request and options
-        Decidim::CohesionId::Client.call(settings, "LogoutSito", @id_sessione_sso, @id_sessione_aspnet_sso)
-      ensure
-        redirect('/') #TODO: URL AFTER LOGOUT
-      end
-
-      def slo_path
-        @slo_path ||= begin
-                     path ||= "#{script_name}#{path_prefix}/#{name}/slo"
-                     path
-                   end
       end
 
     end

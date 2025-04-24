@@ -218,51 +218,10 @@ module Decidim
               via: [:post, :put, :patch]
             )
 
-            match(
-              "/users/auth/#{config.name}/slo",
-              to: "sessions#slo",
-              as: "user_#{config.name}_omniauth_slo",
-              via: [:get, :post]
-            )
           end
         end
       end
-    #
-    #   def auto_email_for(organization, identifier_digest)
-    #     domain = auto_email_domain || organization.host
-    #     "#{name}-#{identifier_digest}@#{domain}"
-    #   end
-    #
-    #   def auto_email_matches?(email)
-    #     return false unless auto_email_domain
-    #
-    #     email =~ /^#{name}-[a-z0-9]{32}@#{auto_email_domain}$/
-    #   end
-    #
-    #   # Usato per determinare il default service provider entity ID in caso non specificato in sp_entity_id.
-    #   def application_host
-    #     url_options = application_url_options
-    #
-    #     host = url_options[:host]
-    #     port = url_options[:port]
-    #     protocol = url_options[:protocol]
-    #     protocol = [80, 3000].include?(port.to_i) ? "http" : "https" if protocol.blank?
-    #     if host.blank?
-    #       host = "localhost"
-    #       port ||= 3000
-    #     end
-    #
-    #     return "#{protocol}://#{host}:#{port}" if port && [80, 443].exclude?(port.to_i)
-    #
-    #     "#{protocol}://#{host}"
-    #   end
-    #
-    #   def application_url_options
-    #     conf = Rails.application.config
-    #     url_options = conf.action_controller.default_url_options
-    #     url_options = conf.action_mailer.default_url_options if !url_options || !url_options[:host]
-    #     url_options || {}
-    #   end
+
     end
   end
 end

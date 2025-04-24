@@ -32,7 +32,7 @@ module Decidim
       private
 
       def decode_raw_saml(p, settings = nil)
-        Base64.decode64(CGI.unescape(p))
+        Base64.decode64(p)
       rescue Exception => ex
         raise Decidim::CohesionId::ValidationError.new(ex)
       end
