@@ -17,8 +17,8 @@ Decidim::CohesionId.configure do |config|
   config.sso_web_check_session = Rails.application.secrets.omniauth[:cohesion_id][:sso_web_check_session]
 
   # TODO: DA verificare se devono essere configurabili
-  # config.sso_additional_data = "AuthRestriction=0,1,2,3;<%= entity_id %>/Account/LogOff"
-  # config.site_index_url = "<%= entity_id %>/Account/Login"
+  # config.sso_additional_data = "AuthRestriction=0,1,2,3;#{config.entity_id}/Account/LogOff"
+  # config.site_index_url = "#{config.entity_id}/Account/Login"
   # config.site_url_logout = "../Logout.aspx?ReturnUrl=https%3A%2F%2Fcohesion2.regione.marche.it%2FSPManager%2FLogout.aspx"
   config.id_sito = Rails.application.secrets.omniauth[:cohesion_id][:id_sito]
 
