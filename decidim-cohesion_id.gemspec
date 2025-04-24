@@ -32,9 +32,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "decidim-core", "~> #{Decidim::CohesionId.version}"
 
-  # s.add_runtime_dependency 'oauth2', '~> 2.0'
+  s.add_dependency "rexml", "~> 3.2"
   s.add_dependency 'omniauth', '~> 2.0'
   s.add_dependency "deface", '~> 1.9.0'
-  # s.add_runtime_dependency 'omniauth-oauth2', '~> 1.8'
-
 end
