@@ -188,7 +188,7 @@ module Decidim
         end
 
         def is_spid?
-          !("smartcard" == oauth_hash.dig(:extra, :raw_info, :authenticationMethod).try(:first).try(:downcase))
+          oauth_hash.dig(:info, :spidCode).present?
         end
       end
     end

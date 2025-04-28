@@ -2,7 +2,7 @@
 
 Decidim::CohesionId.configure do |config|
   # Definisce il nome del tenant. Solo lettere minuscole e underscores sono permessi.
-  # Default: cohesionID. Quando hai multipli tenant devi definire un nome univoco rispetto ai vari tenant.
+  # Default: cohesion_id. Quando hai multipli tenant devi definire un nome univoco rispetto ai vari tenant.
   config.name = "<%= tenant_name %>"
 
   # Dominio tenant

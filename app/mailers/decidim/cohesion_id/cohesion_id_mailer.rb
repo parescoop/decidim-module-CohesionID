@@ -13,7 +13,7 @@ module Decidim
 
           subject = I18n.t(
             "subject",
-            scope: "decidim.cohesionID.cohesion_id_mailer"
+            scope: "decidim.cohesion_id.cohesion_id_mailer"
           )
           mail(to: user.email, subject: subject)
         end

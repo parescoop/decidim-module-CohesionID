@@ -19,7 +19,7 @@ module Decidim
           authenticator.identify_user!(current_user)
 
           # Aggiunge l'autorizzazione per l'utente
-          return fail_authorize unless authorize_user(current_user)
+          return fail_authorize(:identity_bound_to_other_user) unless authorize_user(current_user)
 
           # Aggiorna le informazioni dell'utente
           authenticator.update_user!(current_user, true)
@@ -50,9 +50,8 @@ module Decidim
       def create
         form_params = user_params_from_oauth_hash || params.require(:user).permit!
         form_params.merge!(params.require(:user).permit!) if params.dig(:user).present?
-        origin = Base64.strict_decode64(params['RelayState']) rescue ''
+        invitation_token = params['invitation_token'] rescue ''
 
-        invitation_token = invitation_token(origin)
         verified_e = verified_email
 
         # nel caso la form di integrazione dati viene presentata
@@ -66,13 +65,13 @@ module Decidim
           @form.email ||= invited_user.email
           verified_e = invited_user.email
         else
-          if current_provider && isnt_cie_or_cns? && (u = current_organization.users.find_by(email: verified_e))
-            form_params[:name] = u.name
-            form_params[:nickname] = u.nickname
-          else
-            form_params[:name] = params.dig(:user, :name) if params.dig(:user, :name).present? && isnt_cie_or_cns?
-            form_params[:nickname] = params.dig(:user, :nickname) if params.dig(:user, :nickname).present? && isnt_cie_or_cns?
-          end
+          # if isnt_cie_or_cns? && (u = current_organization.users.find_by(email: verified_e))
+          #   form_params[:name] = u.name
+          #   form_params[:nickname] = u.nickname
+          # else
+            form_params[:name] = params.dig(:user, :name) if params.dig(:user, :name).present? # && isnt_cie_or_cns?
+            form_params[:nickname] = params.dig(:user, :nickname) if params.dig(:user, :nickname).present? # && isnt_cie_or_cns?
+          # end
           @form = form(OmniauthCohesionIdRegistrationForm).from_params(form_params)
           @form.email ||= verified_e
           verified_e ||= form_params.dig(:email)
@@ -92,7 +91,7 @@ module Decidim
           uid: @form.uid
         )
 
-        CreateOmniauthCohesionIdRegistration.call(@form, verified_e) do
+        CreateOmniauthCohesionIdRegistration.call(@form, @form.email || verified_e) do
           on(:ok) do |user|
             # Se l'identità COHESION_ID è già utilizzata da un altro account
             if invited_user.present? && invited_user.email != user.email
@@ -214,14 +213,6 @@ module Decidim
         tenant.name + '_cohesion_id_'
       end
 
-      def invitation_token(url)
-        begin
-          CGI.parse(URI.parse(url).query).dig('invitation_token').first
-        rescue
-          nil
-        end
-      end
-
       def verified_email
         authenticator.verified_email
       end
@@ -235,11 +226,7 @@ module Decidim
       end
 
       def isnt_cie_or_cns?
-        current_provider && !["smartcard"].include?(current_provider.try(&:downcase))
-      end
-
-      def current_provider
-        @current_provider ||= current_provider = oauth_hash.dig(:extra, :raw_info, :authenticationMethod).try(:first)
+        oauth_hash.dig(:info, :spidCode).present?
       end
     end
   end

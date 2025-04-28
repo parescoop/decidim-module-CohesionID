@@ -5,9 +5,9 @@ module Decidim
     class Tenant
       include ActiveSupport::Configurable
 
-      # Il nome che identificata il singolo Tenant. Default: cohesionID
+      # Il nome che identificata il singolo Tenant. Default: cohesion_id
       config_accessor :name, instance_writer: false do
-        "cohesionID"
+        "cohesion_id"
       end
 
       # Definisce il dominio del tenant

@@ -21,7 +21,7 @@ Il TENANT_NAME deve essere univoco anche tra CohesionId.
 Verranno generati:
 1. `config/initializers/decidim-cohesion_id-#{tenant_name}.rb` per configurare CohesionId ad ogni installazione.
    2`verrà automaticamente aggiunto in `config/secrets.yml` nel blocco default la configurazione `omniauth` necessaria. Aggiungere la configurazione ai vari environment a seconda delle esigenze.
-3`config/locales/cohesionID-#{tenant_name}.en.yml` con le etichette necessarie. Duplicare per ogni locale necessaria.
+3`config/locales/cohesion_id-#{tenant_name}.en.yml` con le etichette necessarie. Duplicare per ogni locale necessaria.
 
 Per modificare o eliminare un tenant è sufficiente modificare o cancellare proprio il file generato in initializers e fare un restart del server.
 Qualora si voglia eliminare la gemma è sufficiente eliminare o ripristinare i file generati degli step precedenti.
@@ -73,8 +73,8 @@ Routes for Decidim::CohesionId::Engine:
          user_#{tenant_name}_omniauth_spslo GET|POST       /users/auth/#{tenant_name}/spslo(.:format)    decidim/cohesion_id/sessions#spslo
 
 Routes for Decidim::CohesionId::Verification::Engine:
-                          new_authorization GET           /authorizations/new(.:format)                   decidim/cohesionID/verification/authorizations#new
-                                       root GET           /                                               decidim/cohesionID/verification/authorizations#new
+                          new_authorization GET           /authorizations/new(.:format)                   decidim/cohesion_id/verification/authorizations#new
+                                       root GET           /                                               decidim/cohesion_id/verification/authorizations#new
 
 ```
 
