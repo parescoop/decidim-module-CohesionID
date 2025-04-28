@@ -34,6 +34,11 @@ module Decidim
         Decidim::CohesionId.setup!
       end
 
+      initializer "decidim_cohesion_id.session.same_site_none", after: "Expire sessions" do
+        Rails.application.config.action_dispatch.cookies_same_site_protection = :none
+        Decidim.config.force_ssl = !Rails.env.development?
+      end
+
       overrides = "#{Decidim::CohesionId::Engine.root}/app/overrides"
       config.to_prepare do
         Rails.autoloaders.main.ignore(overrides)
