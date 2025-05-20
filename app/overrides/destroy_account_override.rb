@@ -12,7 +12,7 @@ module Decidim
 
       Decidim::User.transaction do
         destroy_user_account!
-        destroy_user_authorizations
+        # destroy_user_authorizations
         destroy_user_identities
         destroy_user_group_memberships
         destroy_follows
