@@ -13,8 +13,8 @@ module Decidim
         i = current_user.identities.find_by(provider: tenant.name) rescue nil
         Decidim::ActionLogger.log(:logout, current_user, i, {}) if i
 
-        Decidim::CohesionId::Client.call(tenant.config, "LogoutSito", session.delete("decidim-#{tenant.name}.id_sessione_sso"), session.delete("decidim-#{tenant.name}.id_sessione_aspnet_sso"))
         current_user.invalidate_all_sessions!
+        Decidim::CohesionId::Client.call(tenant.config, "LogoutSito", session.delete("decidim-#{tenant.name}.id_sessione_sso"), session.delete("decidim-#{tenant.name}.id_sessione_aspnet_sso"))
 
         sign_out_path = tenant.config.entity_id
 

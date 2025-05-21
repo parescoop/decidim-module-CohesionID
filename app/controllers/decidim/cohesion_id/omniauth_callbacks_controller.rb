@@ -45,6 +45,8 @@ module Decidim
         fail_authorize(e.validation_key)
       rescue Decidim::CohesionId::Authentication::IdentityBoundToOtherUserError
         fail_authorize(:identity_bound_to_other_user)
+      rescue Decidim::CohesionId::Authentication::AuthorizationBoundToOtherUserError
+        fail_authorize(:authorization_bound_to_other_user)
       end
 
       def create
@@ -119,8 +121,16 @@ module Decidim
                 i = user.identities.find_by(uid: @form.uid) rescue nil
                 Decidim::ActionLogger.log(:registration, user, i, {})
               end
-              sign_in_and_redirect user, verified_email: verified_e, event: :authentication
-              set_flash_message :notice, :success, kind: "CohesionID"
+              if user.is_a?(::Decidim::User)
+                if authorize_user(user)
+                  authenticator.update_user!(user)
+                  sign_in_and_redirect user, verified_email: verified_e, event: :authentication
+                  set_flash_message :notice, :success, kind: "CohesionID"
+                else
+                  fail_authorize(:authorization_bound_to_other_user)
+                end
+              end
+
             else
               expire_data_after_sign_in!
               user.resend_confirmation_instructions unless user.confirmed?
@@ -144,18 +154,14 @@ module Decidim
 
       def failure
         set_flash_message! :alert, :failure, kind: "CohesionID", reason: failure_message
-        redirect_to after_omniauth_failure_path_for(resource_name)
+        redirect_to(after_omniauth_failure_path_for(resource_name)) && return
       end
 
-      def sign_in_and_redirect(resource_or_scope, *args)
-        if resource_or_scope.is_a?(::Decidim::User)
-          return fail_authorize unless authorize_user(resource_or_scope)
-
-          authenticator.update_user!(resource_or_scope)
-        end
-
-        super
-      end
+      # def sign_in_and_redirect(resource_or_scope, *args)
+      #
+      #
+      #   super
+      # end
 
       def first_login_and_not_authorized?(_user)
         false
@@ -178,7 +184,7 @@ module Decidim
 
       def fail_authorize(failure_message_key = :already_authorized)
         flash[:alert] = t("failure.#{failure_message_key}", scope: "decidim.cohesion_id.omniauth_callbacks")
-        redirect_to stored_location_for(resource || :user) || decidim.root_path
+        redirect_to(stored_location_for(resource || :user) || decidim.root_path) && return
       end
 
       def omniauth_registrations_path(resource)

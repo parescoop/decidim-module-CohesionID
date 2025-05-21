@@ -41,8 +41,9 @@ module Decidim
       @user.save!
     end
 
+    # Rimossa cancellazione
     def destroy_user_authorizations
-      Decidim::Authorization.where(user: @user).destroy_all
+      # Decidim::Authorization.where(user: @user, name: 'cohesion_id_identity').destroy_all
     end
 
   end

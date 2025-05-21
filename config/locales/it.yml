@@ -58,6 +58,7 @@ it:
           success_status: "Si è verificato un errore durante il login."
           already_authorized: "Utente già loggato"
           identity_bound_to_other_user: "L'account CohesionID è già utilizzato da un altro utente."
+          authorization_bound_to_other_user: "L'account CohesionID è già utilizzato da un altro utente."
           session_expiration: "Sessione scaduta"
           conditions: ""
         create:
