@@ -12,7 +12,7 @@ module Decidim
 
       Decidim::User.transaction do
         destroy_user_account!
-        # destroy_user_authorizations
+        destroy_user_authorizations
         destroy_user_identities
         destroy_user_group_memberships
         destroy_follows
@@ -43,7 +43,7 @@ module Decidim
 
     # Rimossa cancellazione
     def destroy_user_authorizations
-      # Decidim::Authorization.where(user: @user, name: 'cohesion_id_identity').destroy_all
+      Decidim::Authorization.where(user: @user, name: 'cohesion_id_identity').destroy_all
     end
 
   end
