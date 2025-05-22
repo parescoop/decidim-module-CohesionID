@@ -26,10 +26,12 @@ module Decidim
           return nil if user_identifier.blank?
           existing_user = Decidim::User.find_by(organization: organization, email: verified_email)
           existing_user = nil if existing_user && !existing_user.must_log_with_cohesion_id?
+          n = existing_user.try(:name) || "#{oauth_data.dig(:info, :name)} #{oauth_data.dig(:info, :familyName)}"
           {
             provider: oauth_data[:provider],
             uid: user_identifier,
-            name: existing_user.try(:name) || "#{oauth_data.dig(:info, :name)} #{oauth_data.dig(:info, :familyName)}",
+            name: n,
+            nickname: ::Decidim::UserBaseEntity.nicknamize(n, organization: organization),
             oauth_signature: user_signature,
             avatar_url: oauth_data[:info][:image],
             raw_data: oauth_hash

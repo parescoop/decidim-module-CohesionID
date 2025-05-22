@@ -8,7 +8,7 @@ module Decidim
       validates :nickname, presence: true
 
       def normalized_nickname
-        nickname
+        UserBaseEntity.nicknamize(nickname || name, organization: current_organization)
       end
 
       def raw_data
