@@ -31,7 +31,7 @@ module Decidim
             provider: oauth_data[:provider],
             uid: user_identifier,
             name: n,
-            nickname: ::Decidim::UserBaseEntity.nicknamize(n, organization: organization),
+            # nickname: ::Decidim::UserBaseEntity.nicknamize(n, organization: organization),
             oauth_signature: user_signature,
             avatar_url: oauth_data[:info][:image],
             raw_data: oauth_hash
