@@ -9,10 +9,14 @@ module Decidim
       def create_or_find_user
         generated_password = SecureRandom.hex
 
-        @user = User.find_or_initialize_by(
-          email: verified_email,
-          organization: organization
-        )
+        @user = if verified_email.present?
+                  User.find_or_initialize_by(
+                    email: verified_email,
+                    organization: organization
+                  )
+                else
+                  User.new(organization: organization)
+                end
 
         if persisted = @user.persisted?
           @user.skip_confirmation! if !@user.confirmed? && @user.email == verified_email

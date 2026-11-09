@@ -12,13 +12,11 @@ Deface::Override.new(virtual_path: "decidim/devise/omniauth_registrations/new",
 
       <%= f.text_field :nickname, help_text: t("decidim.devise.omniauth_registrations.new.nickname_help", organization: current_organization.name), autocomplete: "nickname", placeholder: "johndoe" %>
 
-      <%= f.email_field :email, readonly: session["decidim-cohesion_id.tenant"].present? && f.object.email.present?, placeholder: t("placeholder_email", scope: "decidim.devise.shared") %>
+      <%= f.email_field :email, readonly: session["decidim-cohesion_id.verified_email"].present? && f.object.email.present?, placeholder: t("placeholder_email", scope: "decidim.devise.shared") %>
       <%= f.hidden_field :raw_data %>
       <%= f.hidden_field :invitation_token %>
-      <div id="card__newsletter" class="form__wrapper-block">
-        <h2 class="h4"><%= t("decidim.devise.registrations.new.newsletter_title") %></h2>
-        <%= f.check_box :newsletter, label: t("decidim.devise.registrations.new.newsletter"), checked: @form.newsletter, label_options: { class: "form__wrapper-checkbox-label" } %>
-      </div>
+
+      <%= render partial: "decidim/devise/shared/tos_fields", locals: { form: f, user: :user } %>
 
       <%= f.hidden_field :uid %>
       <%= f.hidden_field :provider %>

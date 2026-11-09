@@ -1,5 +1,5 @@
 # Decidim CohesionId
-Autenticazione CohesionId per Decidim v0.28.x. Questa gemma dipende da: [decidim](https://github.com/decidim/decidim/tree/v0.28.5) e [omniauth](https://github.com/omniauth/omniauth).
+Autenticazione CohesionId per Decidim v0.30.x. Questa gemma dipende da: [decidim](https://github.com/decidim/decidim/tree/v0.30.9) e [omniauth](https://github.com/omniauth/omniauth).
 
 ## Installazione
 Aggiungi al tuo Gemfile
@@ -25,6 +25,25 @@ Verranno generati:
 
 Per modificare o eliminare un tenant è sufficiente modificare o cancellare proprio il file generato in initializers e fare un restart del server.
 Qualora si voglia eliminare la gemma è sufficiente eliminare o ripristinare i file generati degli step precedenti.
+
+## Migrazione da versioni precedenti
+Da questa versione, per il provider CohesionID, il campo `decidim_identities.uid` non contiene più il Codice Fiscale in chiaro: viene salvato un identificatore pseudonimizzato (`HMAC-SHA256` con prefisso `v1:`), deterministico per tenant/provider/utente.
+
+Se si aggiorna da una versione precedente con dati già in produzione, è necessario pianificare una migrazione dei record esistenti (`provider = cohesion_id`) per evitare disallineamenti tra login futuri e identity già salvate.
+
+È disponibile il task:
+
+```bash
+bundle exec rake decidim:cohesion_id:migrate_identity_uids
+```
+
+Per simulare senza scrivere su DB:
+
+```bash
+DRY_RUN=true bundle exec rake decidim:cohesion_id:migrate_identity_uids
+```
+
+Il task converte ogni `uid` legacy (non già prefissato `v1:`) nel nuovo formato pseudonimizzato, limitandosi ai provider CohesionID configurati (più `cohesion_id`).
 
 ## Configurazione
 Associare nel pannello di amministratore di sistema (/system) il `tenant_name` ad ogni organizzazione CohesionID.

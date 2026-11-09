@@ -14,6 +14,7 @@ module Decidim
         session["decidim-cohesion_id.tenant"] = tenant.name
 
         authenticator.validate!
+        session["decidim-cohesion_id.verified_email"] = verified_email.presence
 
         if user_signed_in?
           authenticator.identify_user!(current_user)
@@ -50,10 +51,12 @@ module Decidim
       end
 
       def create
-        form_params = user_params_from_oauth_hash || params.require(:user).permit!
-        form_params.merge!(params.require(:user).permit!) if params.dig(:user).present?
-        invitation_token = params['invitation_token'] rescue ''
+        form_params = user_params_from_oauth_hash || {}
+        form_params.merge!(safe_user_params.to_h) if params.dig(:user).present?
+        invitation_token = params['invitation_token'] || params.dig('user', 'invitation_token') rescue ''
 
+        # Solo email verificata dal provider (o da invitation token) deve essere
+        # considerata "trusted" per eventuale lookup account esistente.
         verified_e = verified_email
 
         # nel caso la form di integrazione dati viene presentata
@@ -76,7 +79,6 @@ module Decidim
           # end
           @form = form(OmniauthCohesionIdRegistrationForm).from_params(form_params)
           @form.email ||= verified_e
-          verified_e ||= form_params.dig(:email)
         end
 
         # Controllo che non esisti un'altro account con la stessa email utilizzata con COHESION_ID
@@ -93,7 +95,7 @@ module Decidim
           uid: @form.uid
         )
 
-        CreateOmniauthCohesionIdRegistration.call(@form, @form.email || verified_e) do
+        CreateOmniauthCohesionIdRegistration.call(@form, verified_e) do
           on(:ok) do |user|
             # Se l'identità COHESION_ID è già utilizzata da un altro account
             if invited_user.present? && invited_user.email != user.email
@@ -153,6 +155,7 @@ module Decidim
       end
 
       def failure
+        session.delete("decidim-cohesion_id.verified_email")
         set_flash_message! :alert, :failure, kind: "CohesionID", reason: failure_message
         redirect_to(after_omniauth_failure_path_for(resource_name)) && return
       end
@@ -224,7 +227,8 @@ module Decidim
       end
 
       def oauth_hash
-        raw_hash = request.env["omniauth.auth"] || JSON.parse(params.dig(:user, :raw_data))
+        raw_hash = request.env["omniauth.auth"]
+        raw_hash ||= JSON.parse(params.dig(:user, :raw_data) || "{}")
         return {} unless raw_hash
         raw_hash.try(:[], 'extra').try(:delete, 'response_object')
 
@@ -233,6 +237,10 @@ module Decidim
 
       def isnt_cie_or_cns?
         oauth_hash.dig(:info, :spidCode).present?
+      end
+
+      def safe_user_params
+        params.require(:user).permit(:name, :nickname, :email, :newsletter, :tos_agreement)
       end
     end
   end

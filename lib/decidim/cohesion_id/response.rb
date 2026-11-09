@@ -3,6 +3,7 @@ require 'decidim/cohesion_id/client'
 require 'nokogiri'
 require 'rexml/document'
 require 'rexml/xpath'
+require 'uri'
 
 module Decidim
   module CohesionId
@@ -19,17 +20,31 @@ module Decidim
         @errors = []
       end
 
-      def valid?
+      def valid?(expected_url: nil)
         @errors << "Errore durante l'autenticazione: URL richiesta non valorizzato." if url_richiesta.blank?
         @errors << "Errore durante l'autenticazione: Esito auth non conforme." if esito_auth_sso.blank? || esito_auth_sso != 'OK'
+        if expected_url.present? && !valid_request_url?(expected_url)
+          @errors << "Errore durante l'autenticazione: URL richiesta non conforme."
+        end
         @errors.blank?
       end
 
       def get_data
-         Client.call(@settings, "GetCredential", id_sessione_sso, id_sessione_aspnet_sso)
+        Client.call(@settings, "GetCredential", id_sessione_sso, id_sessione_aspnet_sso)
       end
 
       private
+
+      def valid_request_url?(expected_url)
+        expected = URI.parse(expected_url)
+        actual = URI.parse(url_richiesta)
+
+        expected.scheme == actual.scheme &&
+          expected.host == actual.host &&
+          expected.path == actual.path
+      rescue URI::InvalidURIError
+        false
+      end
 
       def decode_raw_saml(p, settings = nil)
         Base64.decode64(p)

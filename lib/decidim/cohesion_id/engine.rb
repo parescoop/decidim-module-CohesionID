@@ -34,9 +34,13 @@ module Decidim
         Decidim::CohesionId.setup!
       end
 
-      initializer "decidim_cohesion_id.session.same_site_none", after: "Expire sessions" do
+      initializer "decidim_cohesion_id.session.same_site_none", before: "decidim_core.session_store" do
         Rails.application.config.action_dispatch.cookies_same_site_protection = :none
-        Decidim.config.force_ssl = !Rails.env.development?
+        Decidim.config.force_ssl = ENV["APP_SCHEME"] == "https" || !Rails.env.development?
+      end
+
+      rake_tasks do
+        Dir.glob(File.expand_path("../../tasks/**/*.rake", __dir__)).each { |f| load f }
       end
 
       overrides = "#{Decidim::CohesionId::Engine.root}/app/overrides"

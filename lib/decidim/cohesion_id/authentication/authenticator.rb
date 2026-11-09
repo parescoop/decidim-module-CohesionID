@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "openssl"
 
 module Decidim
   module CohesionId
@@ -29,10 +30,10 @@ module Decidim
           n = existing_user.try(:name) || "#{oauth_data.dig(:info, :name)} #{oauth_data.dig(:info, :familyName)}"
           {
             provider: oauth_data[:provider],
-            uid: user_identifier,
+            uid: identity_uid,
             name: n,
             # nickname: ::Decidim::UserBaseEntity.nicknamize(n, organization: organization),
-            oauth_signature: user_signature,
+            oauth_signature: oauth_form_signature,
             avatar_url: oauth_data[:info][:image],
             raw_data: oauth_hash
           }.merge(
@@ -53,7 +54,7 @@ module Decidim
           id = ::Decidim::Identity.find_by(
             organization: organization,
             provider: oauth_data[:provider],
-            uid: user_identifier
+            uid: identity_uid
           )
           @new_user = id ? id.user.blank? : true
 
@@ -64,7 +65,7 @@ module Decidim
           identity = user.identities.find_by(
             organization: organization,
             provider: oauth_data[:provider],
-            uid: user_identifier
+            uid: identity_uid
           )
           Decidim::ActionLogger.log(:login, user, identity, {}) if identity
           return identity if identity
@@ -73,7 +74,7 @@ module Decidim
           id = ::Decidim::Identity.find_by(
             organization: organization,
             provider: oauth_data[:provider],
-            uid: user_identifier
+            uid: identity_uid
           )
 
           raise IdentityBoundToOtherUserError if id
@@ -81,7 +82,7 @@ module Decidim
           i = user.identities.create!(
             organization: organization,
             provider: oauth_data[:provider],
-            uid: user_identifier
+            uid: identity_uid
           )
 
           Decidim::ActionLogger.log(:registration, user, i, {})
@@ -167,9 +168,25 @@ module Decidim
         end
 
         def user_signature
-          @user_signature ||= ::Decidim::OmniauthRegistrationForm.create_signature(
+          @user_signature ||= signature_for(user_identifier)
+        end
+
+        def oauth_form_signature
+          @oauth_form_signature ||= signature_for(identity_uid)
+        end
+
+        def identity_uid
+          @identity_uid ||= begin
+            secret = Rails.application.secret_key_base.to_s
+            payload = "#{tenant.name}:#{oauth_data[:provider]}:#{user_identifier}"
+            "v1:#{OpenSSL::HMAC.hexdigest("SHA256", secret, payload)}"
+          end
+        end
+
+        def signature_for(uid)
+          ::Decidim::OmniauthRegistrationForm.create_signature(
             oauth_data[:provider],
-            user_identifier
+            uid
           )
         end
 

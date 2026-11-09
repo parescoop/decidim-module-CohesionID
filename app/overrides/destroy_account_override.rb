@@ -20,7 +20,7 @@ module Decidim
         delegate_destroy_to_participatory_spaces
       end
 
-      Rails.logger.info("decidim-module-cohesion_id || Distrutto utente #{@user.id}: il record sul DB è ancora presente, viene soltanto 'ripulito' dai dati personali.")
+      Rails.logger.info("decidim-module-cohesion_id || Distrutto utente #{current_user.id}: il record sul DB è ancora presente, viene soltanto 'ripulito' dai dati personali.")
 
       broadcast(:ok)
     end
@@ -28,22 +28,27 @@ module Decidim
     private
 
     def destroy_user_account!
-      @user.invalidate_all_sessions!
+      current_user.invalidate_all_sessions!
 
-      @user.name = ""
-      @user.nickname = ""
-      @user.email = ""
-      @user.delete_reason = @form.delete_reason
-      @user.admin = false if @user.admin?
-      @user.deleted_at = Time.current
-      @user.skip_reconfirmation!
-      @user.avatar.purge
-      @user.save!
+      current_user.name = ""
+      current_user.nickname = ""
+      current_user.email = ""
+      current_user.personal_url = ""
+      current_user.about = ""
+      current_user.notifications_sending_frequency = "none"
+      current_user.delete_reason = @form.delete_reason
+      current_user.admin = false if current_user.admin?
+      current_user.deleted_at = Time.current
+      current_user.skip_reconfirmation!
+      current_user.avatar.purge
+      current_user.save!
     end
+
 
     # Rimossa cancellazione
     def destroy_user_authorizations
-      Decidim::Authorization.where(user: @user, name: 'cohesion_id_identity').destroy_all
+      name = "#{@form.current_organization.enabled_omniauth_providers.dig(:cohesion_id, :tenant_name)}_identity"
+      Decidim::Authorization.where(user: current_user, name: name).destroy_all
     end
 
   end
